@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>おさんぽAI 🌿</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Noto Sans JP', sans-serif; }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in { animation: fadeInUp 0.3s ease-out forwards; }
+
+    @keyframes dotBounce {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-5px); }
+    }
+    .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #9ca3af; animation: dotBounce 0.9s ease-in-out infinite; }
+    .dot:nth-child(2) { animation-delay: 0.15s; }
+    .dot:nth-child(3) { animation-delay: 0.30s; }
+
+    /* スクロールバーを細く */
+    #chat-container::-webkit-scrollbar { width: 4px; }
+    #chat-container::-webkit-scrollbar-thumb { background: #d1fae5; border-radius: 2px; }
+  </style>
+</head>
+
+<body class="bg-stone-50 flex flex-col h-screen overflow-hidden">
+
+  <!-- ヘッダー -->
+  <header class="flex-shrink-0 bg-white border-b border-gray-100 shadow-sm z-10">
+    <div class="max-w-lg mx-auto px-4 py-3 flex items-center gap-3">
+      <div class="w-9 h-9 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center text-xl shadow-sm">🌿</div>
+      <div>
+        <h1 class="font-bold text-gray-800 leading-tight">おさんぽAI</h1>
+        <p class="text-xs text-gray-400">あなたにぴったりのスポットを提案</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- チャットエリア（スクロール可能） -->
+  <main id="chat-container" class="flex-1 overflow-y-auto max-w-lg w-full mx-auto px-4 py-5 space-y-4">
+    <!-- メッセージがここに追加される -->
+  </main>
+
+  <!-- 下部固定エリア -->
+  <div class="flex-shrink-0 bg-white border-t border-gray-100 shadow-[0_-4px_16px_rgba(0,0,0,0.06)] z-10">
+    <div class="max-w-lg mx-auto px-4 py-4">
+
+      <!-- セットアップフォーム -->
+      <div id="setup-area">
+        <div class="mb-3">
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">📍 出発地</label>
+          <div class="flex gap-2">
+            <input
+              id="location-input"
+              type="text"
+              placeholder="例: 渋谷駅、自宅など..."
+              class="flex-1 border border-gray-200 rounded-xl px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-300 focus:border-transparent bg-gray-50"
+            >
+            <button
+              id="geo-btn"
+              class="bg-blue-50 text-blue-600 border border-blue-200 px-3 py-2 rounded-xl text-xs font-semibold hover:bg-blue-100 transition-colors whitespace-nowrap"
+            >📡 現在地</button>
+          </div>
+        </div>
+        <div class="mb-4">
+          <label class="block text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1.5">🚌 交通手段</label>
+          <div class="flex gap-2">
+            <button class="transport-btn selected flex-1 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all" data-mode="walking">🚶 徒歩</button>
+            <button class="transport-btn flex-1 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all" data-mode="bicycle">🚲 自転車</button>
+            <button class="transport-btn flex-1 py-2.5 rounded-xl border-2 text-sm font-semibold transition-all" data-mode="train">🚃 電車</button>
+          </div>
+        </div>
+        <button
+          id="start-btn"
+          class="w-full bg-gradient-to-r from-green-500 to-emerald-500 text-white py-3 rounded-xl font-bold text-sm hover:from-green-600 hover:to-emerald-600 active:scale-[0.98] transition-all shadow-md shadow-green-200"
+        >お散歩を始める →</button>
+      </div>
+
+      <!-- 選択肢ボタン（質問フェーズ） -->
+      <div id="choices-area" class="hidden">
+        <div id="choices-container" class="flex flex-col gap-2"></div>
+      </div>
+
+      <!-- ローディング -->
+      <div id="loading-area" class="hidden py-3 text-center">
+        <div class="inline-flex items-center gap-2 text-sm text-gray-500">
+          <div class="w-4 h-4 border-2 border-green-500 border-t-transparent rounded-full animate-spin"></div>
+          <span id="loading-text">おすすめスポットを探しています...</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
